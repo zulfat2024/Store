@@ -1,0 +1,91 @@
+CREATE TABLE Товары (
+Код_товара INT PRIMARY KEY not null,
+Наименование VARCHAR(100) not null,
+Количество VARCHAR(100) not null,
+Стоимость MONEY not null
+);
+
+CREATE TABLE Счет_на_оплату (
+Код_счета INT PRIMARY KEY not null,
+Дата DATE not null,
+Код_товара INT not null,
+Код_договора INT not null,
+Итоговая_сумма MONEY not null,
+FOREIGN KEY (Код_договора)
+REFERENCES [Договор] (Код_договора)
+);
+
+ CREATE TABLE Поставщик (
+Код_поставщика INT PRIMARY KEY not null,
+Фамилия VARCHAR (100) not null,
+Имя VARCHAR (100) not null,
+Отчество VARCHAR (100) not null,
+Номер_телефона VARCHAR (10) not null,
+Код_по_ОКПО INT not null,
+Тип_КПП INT not null,
+Юридический_адрес VARCHAR (100) not null,
+Контактная_информация VARCHAR (50) not null,
+Код_товара INT not null,
+FOREIGN KEY (Код_товара)
+REFERENCES [Товары] (Код_товара)
+);
+ CREATE TABLE Менеджер (
+Код_менеджера INT PRIMARY KEY not null,
+ФИО_сотрудника VARCHAR (100) not null,
+Должность VARCHAR (100) not null,
+Табельный_номер INT not null,
+Номер_телефона VARCHAR (10) not null,
+Код_покупателя INT not null,
+Код_договора INT not null,
+FOREIGN KEY (Код_покупателя)
+REFERENCES [Покупатель] (Код_покупателя),
+FOREIGN KEY (Код_договора)
+REFERENCES [Договор] (Код_договора)
+);
+ CREATE TABLE Каталог_товаров (
+Код_каталога INT PRIMARY KEY not null,
+Наименование_раздела VARCHAR (100) not null,
+Код_товара INT not null,
+Название_товара VARCHAR (50) not null,
+FOREIGN KEY (Код_товара)
+REFERENCES [Товары] (Код_товара)
+);
+
+CREATE TABLE Заказ (
+Код_заказа INT PRIMARY KEY not null,
+Номер_заказа INT not null,
+Наименование VARCHAR(100) not null,
+Дата_оформления DATE not null,
+Дата_доставки DATE not null,
+Код_менеджера INT not null,
+Код_покупателя INT not null,
+Стоимость MONEY not null,
+FOREIGN KEY (Код_менеджера)
+REFERENCES [Менеджер] (Код_менеджера),
+FOREIGN KEY (Код_покупателя)
+REFERENCES [Покупатель] (Код_покупателя)
+);
+
+CREATE TABLE Договор (
+Код_договора INT PRIMARY KEY not null,
+Наименование VARCHAR (50) not null,
+Номер_договора INT not null,
+Код_товара INT not null,
+Код_покупателя INT not null,
+Дата_оформления DATE not null,
+Предмет_договора CHAR(100) not null,
+FOREIGN KEY (Код_товара)
+REFERENCES [Товары] (Код_товара)
+);
+
+CREATE TABLE Покупатель (
+Код_покупателя INT PRIMARY KEY not null,
+Полное_ФИО VARCHAR(100) not null,
+Серия_паспорта INT not null,
+Номер_паспорта INT not null,
+Телефон VARCHAR(100) not null,
+Код_договора INT not null,
+FOREIGN KEY (Код_договора)
+REFERENCES [Договор] (Код_договора)
+);
+
